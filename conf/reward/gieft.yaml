@@ -1,0 +1,8 @@
+# conf/reward/gieft.yaml
+class: GeneralizedIncrementalEFT
+config:
+  gamma: 0.4
+  flip: True
+  clip_total: False
+  clip_individual: False
+  binary: False

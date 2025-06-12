@@ -1,0 +1,2 @@
+_target_: task4feedback.ml.models.OutputHead
+hidden_layers: [64]

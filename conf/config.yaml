@@ -1,13 +1,10 @@
+# conf/config.yaml
 defaults:
-  - dag: stencil
-  - system: fully_connected
-  - mapper: eft
-  - env: nonoise
-  - _self_
-hydra:
-  run:
-    dir: outputs/${system.type}/${dag.type}/${dag.params}/${mapper.type}
-  sweep:
-    dir: multirun/${now:%Y-%m-%d}
-    subdir: ${system.type}/${dag.type}/${dag.params}/${mapper.type}
-
+  - graph: static_jacobi
+  - reward: ieft
+  - system: uniform
+  - feature: candidate_coordinate
+  - network: vector_baseline
+  - algorithm: ppo
+  - runtime: default
+  - wandb: default

@@ -1,6 +1,0 @@
-type: fully_connected
-ngpus: 4
-gpumem: 100000000000000
-cpumem: 100000000000000
-bandwidth: 10000
-latency: 1

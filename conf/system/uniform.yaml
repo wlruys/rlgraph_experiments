@@ -1,0 +1,7 @@
+# conf/system/uniform.yaml
+generator: uniform_connected_devices
+config:
+  n_devices: 5
+  bandwidth: 1
+  mem: 10000000000000
+  latency: 1

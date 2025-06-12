@@ -1,0 +1,2 @@
+__target__: task4feedback.ml.models.VectorStateNet
+hidden_layers: []

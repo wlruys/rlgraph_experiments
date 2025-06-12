@@ -1,9 +1,0 @@
-width: 4
-steps: 10
-dimension: 2
-interior_size: 25000000
-boundary_scale: 5
-data_scale: 10
-interior_comm: None 
-boundary_comm: None
-initial_data_placement: block

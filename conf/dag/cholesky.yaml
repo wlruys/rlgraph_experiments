@@ -1,4 +1,0 @@
-defaults:
-  - cholesky: default
-type: cholesky
-params: ${dag.cholesky.blocks}x${dag.cholesky.blocks}_${dag.cholesky.initial_data_placement}
