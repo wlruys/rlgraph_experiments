@@ -8,3 +8,6 @@ defaults:
   - algorithm: ppo
   - runtime: default
   - wandb: default
+  - logging: default
+  - lr_scheduler: none 
+  - optimizer: adamw

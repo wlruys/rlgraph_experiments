@@ -71,6 +71,7 @@ def make_env(
     runtime_env_t = create_runtime_reward(cfg)
     observer_factory_t = create_observer_factory(cfg)
 
+    print("Running make_env", flush=True)
     input = SimulatorInput(
         m, d, s, transition_conditions=transition_conditions
     )

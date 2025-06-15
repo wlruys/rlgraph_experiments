@@ -1,25 +1,24 @@
-class: PPOConfig
-config:
-  graphs_per_collection: 4
-  max_samples_per_collection: 10000
-  collect_device: cpu
-  update_device: cpu
-  workers: 4
-  ent_coef: 0.0005
-  gae_lmbda: 0.99
-  gae_gamma: 1.0
-  normalize_advantage: false
-  clip_eps: 0.2
-  clip_vloss: false
-  minibatch_size: 32
-  eval_interval: 50
-  eval_episodes: 1
-  lr: 2.5e-4
-  val_coef: 0.5
-  max_grad_norm: 0.5
-  states_per_collection: 1000
-  threads_per_worker: 1
-  num_collections: 10000
-  compile_policy: false
-  compile_advantage: false
-  compile_update: false
+_target_: task4feedback.ml.algorithms.PPOConfig
+implementation: torchrl
+graphs_per_collection: 4
+epochs_per_collection: 4
+states_per_collection: 1000
+num_collections: 1000
+minibatch_size: 32
+collect_device: cpu
+update_device: cpu
+workers: 4
+threads_per_worker: 1
+ent_coef: 0.0005
+gae_lmbda: 0.99
+gae_gamma: 1.0
+clip_eps: 0.2
+clip_vloss: false
+value_norm: "l2"
+val_coef: 0.5
+normalize_advantage: false
+max_grad_norm: 0.5
+compile_policy: false
+compile_advantage: false
+compile_update: false
+using_lstm: false

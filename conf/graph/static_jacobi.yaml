@@ -1,9 +1,7 @@
-# conf/graph/jacobi.yaml
-graph_class: JacobiGraph
-config_class: JacobiConfig
 mesh:
-  generator: generate_quad_mesh
+  _target_: task4feedback.graphs.mesh.generate_quad_mesh
 config:
+  _target_: task4feedback.graphs.jacobi.JacobiConfig
   interior_size: 1000
   boundary_interior_ratio: 1
   randomness: 1
