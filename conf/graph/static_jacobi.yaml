@@ -6,15 +6,15 @@ config:
   boundary_interior_ratio: 1
   randomness: 1
   L: 1
-  n: 6
-  steps: 30
+  n: 4
+  steps: 5
   permute_idx: 0
 init:
   partitioner: metis
   nparts: 4
-  gpu_only: false
-  randomize: true
+  gpu_only: True
+  randomize: True
 env:
-  change_priority: true
-  change_locations: true
-  seed: 0
+  change_priority: True
+  change_locations: True
+  seed: 1

@@ -1,5 +1,5 @@
 class: BatchTransitionConditions
 config:
-  batch_size: 20
+  batch_size: 5
   queue_threshold: 2
   max_in_flight: 16

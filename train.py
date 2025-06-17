@@ -16,7 +16,7 @@ from functools import partial
 
 from task4feedback.ml.algorithms.ppo import run_ppo, run_ppo_lstm
 
-torch.multiprocessing.set_sharing_strategy("file_descriptor")
+#torch.multiprocessing.set_sharing_strategy("file_descriptor")
 # torch.multiprocessing.set_sharing_strategy("file_system")
 
 from rich import print as rprint
