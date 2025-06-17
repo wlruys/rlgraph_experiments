@@ -4,5 +4,5 @@ defaults:
 
 
 _target_: task4feedback.ml.models.VectorStateNet
-hidden_channels: []
+hidden_channels: [32]
 layer_norm: true

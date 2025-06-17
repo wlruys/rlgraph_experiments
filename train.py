@@ -14,7 +14,7 @@ from helper.env import make_env
 from helper.model import *
 from functools import partial
 
-from task4feedback.ml.algorithms.ppo import run_ppo
+from task4feedback.ml.algorithms.ppo import run_ppo, run_ppo_lstm
 
 torch.multiprocessing.set_sharing_strategy("file_descriptor")
 # torch.multiprocessing.set_sharing_strategy("file_system")
@@ -28,27 +28,14 @@ def configure_training(cfg: DictConfig):
     graph_builder = make_graph_builder(cfg)
     env = make_env(graph_builder=graph_builder, cfg=cfg)
 
-    def env_fn():
-        return make_env(graph_builder=graph_builder, cfg=cfg)
-
-    # # check_env_specs(env)
-    # penv = ParallelEnv(4, env_fn)
-
-    # check_env_specs(penv)
-
-    # rprint(graph_builder)
-
-    def env_builder():
-        return make_env(
-            graph_builder=graph_builder,
-            cfg=cfg,
-        )
-
     observer = env.get_observer()
     feature_config = FeatureDimConfig.from_observer(observer)
     print(f"Feature config: {feature_config}")
 
-    a = create_td_actor_critic_models(cfg, feature_config)
+    a, lstm = create_td_actor_critic_models(cfg, feature_config)
+
+    def env_fn():
+        return make_env(graph_builder=graph_builder, cfg=cfg, lstm=lstm)
 
     alg_config = instantiate(cfg.algorithm)
 
@@ -57,12 +44,20 @@ def configure_training(cfg: DictConfig):
     else:
         logging_config = None
 
-    run_ppo(
-        actor_critic_module=a,
-        env_constructors=[env_builder],
-        logging_config=logging_config,
-        ppo_config=alg_config,
-    )
+    if lstm is not None:
+        run_ppo_lstm(
+            actor_critic_module=a,
+            env_constructors=[env_fn],
+            logging_config=logging_config,
+            ppo_config=alg_config,
+        )
+    else:
+        run_ppo(
+            actor_critic_module=a,
+            env_constructors=[env_fn],
+            logging_config=logging_config,
+            ppo_config=alg_config,
+        )
 
 
 @hydra.main(config_path="conf", config_name="config", version_base=None)

@@ -60,7 +60,8 @@ def create_actor_critic_models(
 
 def create_td_actor_critic_models(
     cfg: DictConfig, feature_cfg: FeatureDimConfig
-) -> nn.Module:
+) -> tuple[nn.Module, LSTMModule | None]:
+    lstm_mod = None
     layers = cfg.network.layers
 
     state_layer = layers.state
@@ -69,16 +70,11 @@ def create_td_actor_critic_models(
 
     rprint(actor_layer)
 
+    actor_layers = []
+
     policy_state_module = instantiate(
         state_layer,
         feature_config=feature_cfg,
-        _recursive_=False,
-    )
-
-    policy_output_module = instantiate(
-        actor_layer,
-        input_dim=policy_state_module.output_dim,
-        output_dim=cfg.system.config.n_devices - 1,
         _recursive_=False,
     )
 
@@ -87,16 +83,33 @@ def create_td_actor_critic_models(
         in_keys=["observation"],
         out_keys=["embed"],
     )
+    actor_layers.append(_td_policy_state)
+    output_dim = policy_state_module.output_dim
+
+    if "lstm" in layers:
+        actor_lstm_layer = instantiate(
+            layers.lstm,
+            input_size=policy_state_module.output_dim,
+        )
+        output_dim = layers.lstm.hidden_size
+        actor_layers.append(actor_lstm_layer)
+        lstm_mod = actor_lstm_layer
+
+    policy_output_module = instantiate(
+        actor_layer,
+        input_dim=output_dim,
+        output_dim=cfg.system.config.n_devices - 1,
+        _recursive_=False,
+    )
 
     _td_policy_output = td_nn.TensorDictModule(
         policy_output_module,
         in_keys=["embed"],
         out_keys=["logits"],
     )
+    actor_layers.append(_td_policy_output)
 
-    policy_module = td_nn.TensorDictSequential(
-        _td_policy_state, _td_policy_output, inplace=True
-    )
+    policy_module = td_nn.TensorDictSequential(*actor_layers, inplace=True)
 
     probabilistic_policy = ProbabilisticActor(
         module=policy_module,
@@ -105,17 +118,12 @@ def create_td_actor_critic_models(
         return_log_prob=True,
     )
 
+    critic_layers = []
+
     critic_state_module = instantiate(
         state_layer,
         feature_config=feature_cfg,
         add_progress=cfg.network.critic.add_progress,
-        _recursive_=False,
-    )
-
-    critic_output_module = instantiate(
-        critic_layer,
-        input_dim=critic_state_module.output_dim,
-        output_dim=1,
         _recursive_=False,
     )
 
@@ -124,21 +132,32 @@ def create_td_actor_critic_models(
         in_keys=["observation"],
         out_keys=["embed"],
     )
+    output_dim = critic_state_module.output_dim
+    critic_layers.append(_td_critic_state)
+
+    if "lstm" in layers:
+        critic_lstm_layer = instantiate(
+            layers.lstm,
+            input_size=critic_state_module.output_dim,
+        )
+        output_dim = layers.lstm.hidden_size
+        critic_layers.append(critic_lstm_layer)
+
+    critic_output_module = instantiate(
+        critic_layer,
+        input_dim=output_dim,
+        output_dim=1,
+        _recursive_=False,
+    )
 
     _td_critic_output = td_nn.TensorDictModule(
         critic_output_module,
         in_keys=["embed"],
         out_keys=["state_value"],
     )
+    critic_layers.append(_td_critic_output)
 
-    critic_module = td_nn.TensorDictSequential(
-        _td_critic_state, _td_critic_output, inplace=True
-    )
-
-    # value_operator = ValueOperator(
-    #     module=critic_module,
-    # )
-
+    critic_module = td_nn.TensorDictSequential(*critic_layers, inplace=True)
     value_operator = critic_module
 
-    return ActorCriticModule(probabilistic_policy, value_operator)
+    return ActorCriticModule(probabilistic_policy, value_operator), lstm_mod

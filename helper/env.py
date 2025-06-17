@@ -9,6 +9,19 @@ import hydra
 from omegaconf import DictConfig, OmegaConf
 from task4feedback import fastsim2 as fastsim
 
+from torchrl.envs import (
+    TransformedEnv,
+    Compose,
+    InitTracker,
+    StepCounter,
+    TrajCounter,
+    ObservationNorm,
+    RewardScaling,
+    ExplorationType,
+    TensorDictPrimer,
+)
+from torchrl.modules import LSTMModule
+from typing import Optional
 from functools import partial
 
 
@@ -58,8 +71,7 @@ def create_observer_factory(cfg: DictConfig):
 
 
 def make_env(
-    graph_builder: GraphBuilder,
-    cfg: DictConfig,
+    graph_builder: GraphBuilder, cfg: DictConfig, lstm: Optional[LSTMModule] = None
 ):
     gmsh.initialize()
 
@@ -89,7 +101,12 @@ def make_env(
         change_locations=cfg.graph.env.change_locations,
         seed=cfg.graph.env.seed,
     )
-    # env = TransformedEnv(env, StepCounter())
-    # env = TransformedEnv(env, TrajCounter())
+    env = TransformedEnv(env, StepCounter())
+    env.append_transform(TrajCounter())
+    env.append_transform(InitTracker())
+
+    if lstm is not None:
+        print("Adding LSTM module to environment", flush=True)
+        env.append_transform(lstm.make_tensordict_primer())
 
     return env

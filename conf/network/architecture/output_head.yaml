@@ -4,7 +4,8 @@ defaults:
   - activation/leaky_relu@activation
 
 _target_: task4feedback.ml.models.OutputHead
-hidden_channels: 64
+hidden_channels: 32
+layer_norm: true
 
 initialization:
   layer1:
