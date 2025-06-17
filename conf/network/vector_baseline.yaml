@@ -1,11 +1,7 @@
 defaults:
   - architecture/vector_state_net@layers.state
-  - architecture/output_head@layers.output
+  - architecture/output_head@layers.actor
+  - architecture/output_head@layers.critic
 
-layers: {}  # Will be populated by the defaults above
-
-activation: leaky_relu
-initialization: orthogonal
-progress_in_critic: true
-
-# TODO: Figure out how to override parameters in defaults
+critic:
+  add_progress: true

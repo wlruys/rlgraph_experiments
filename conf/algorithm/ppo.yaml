@@ -5,7 +5,7 @@ graphs_per_collection: 4
 epochs_per_collection: 4
 states_per_collection: 1000
 num_collections: 1000
-minibatch_size: 256
+minibatch_size: 64
 collect_device: cpu
 update_device: cpu
 storing_device: cpu
