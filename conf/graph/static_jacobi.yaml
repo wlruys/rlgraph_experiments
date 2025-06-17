@@ -15,6 +15,6 @@ init:
   gpu_only: false
   randomize: true
 env:
-  change_priority: true
-  change_locations: true
+  change_priority: True
+  change_locations: True
   seed: 0

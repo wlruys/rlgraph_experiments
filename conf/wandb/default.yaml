@@ -1,3 +1,4 @@
 project: rlgraph_experiments
 name: default
 enabled: true
+dir: /home/wlruys/workspace/scheduling/logs

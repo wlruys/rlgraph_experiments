@@ -1,0 +1,95 @@
+/home/wlruys/micromamba/envs/py313/lib/python3.13/site-packages/gravis/_internal/plotting/template_system.py:5: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources as _pkg_resources
+Warning : Gmsh has aleady been initialized
+Error executing job with overrides: []
+Traceback (most recent call last):
+  File "/home/wlruys/workspace/scheduling/rlgraph_experiments/train.py", line 77, in <module>
+    main()
+    ~~~~^^
+  File "/home/wlruys/micromamba/envs/py313/lib/python3.13/site-packages/hydra/main.py", line 94, in decorated_main
+    _run_hydra(
+    ~~~~~~~~~~^
+        args=args,
+        ^^^^^^^^^^
+    ...<3 lines>...
+        config_name=config_name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/wlruys/micromamba/envs/py313/lib/python3.13/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+    _run_app(
+    ~~~~~~~~^
+        run=args.run,
+        ^^^^^^^^^^^^^
+    ...<5 lines>...
+        overrides=overrides,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/wlruys/micromamba/envs/py313/lib/python3.13/site-packages/hydra/_internal/utils.py", line 457, in _run_app
+    run_and_report(
+    ~~~~~~~~~~~~~~^
+        lambda: hydra.run(
+        ^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        )
+        ^
+    )
+    ^
+  File "/home/wlruys/micromamba/envs/py313/lib/python3.13/site-packages/hydra/_internal/utils.py", line 223, in run_and_report
+    raise ex
+  File "/home/wlruys/micromamba/envs/py313/lib/python3.13/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+    return func()
+  File "/home/wlruys/micromamba/envs/py313/lib/python3.13/site-packages/hydra/_internal/utils.py", line 458, in <lambda>
+    lambda: hydra.run(
+            ~~~~~~~~~^
+        config_name=config_name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+        task_function=task_function,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        overrides=overrides,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/wlruys/micromamba/envs/py313/lib/python3.13/site-packages/hydra/_internal/hydra.py", line 132, in run
+    _ = ret.return_value
+        ^^^^^^^^^^^^^^^^
+  File "/home/wlruys/micromamba/envs/py313/lib/python3.13/site-packages/hydra/core/utils.py", line 260, in return_value
+    raise self._return_value
+  File "/home/wlruys/micromamba/envs/py313/lib/python3.13/site-packages/hydra/core/utils.py", line 186, in run_job
+    ret.return_value = task_function(task_cfg)
+                       ~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/wlruys/workspace/scheduling/rlgraph_experiments/train.py", line 70, in main
+    configure_training(cfg)
+    ~~~~~~~~~~~~~~~~~~^^^^^
+  File "/home/wlruys/workspace/scheduling/rlgraph_experiments/train.py", line 29, in configure_training
+    check_env_specs(env)
+    ~~~~~~~~~~~~~~~^^^^^
+  File "/home/wlruys/micromamba/envs/py313/lib/python3.13/site-packages/torchrl/envs/utils.py", line 757, in check_env_specs
+    real_tensordict = env.rollout(
+        3,
+    ...<3 lines>...
+        break_when_any_done=break_when_any_done,
+    )
+  File "/home/wlruys/micromamba/envs/py313/lib/python3.13/site-packages/torchrl/envs/common.py", line 3307, in rollout
+    tensordicts = self._rollout_stop_early(
+        break_when_all_done=break_when_all_done,
+        break_when_any_done=break_when_any_done,
+        **kwargs,
+    )
+  File "/home/wlruys/micromamba/envs/py313/lib/python3.13/site-packages/torchrl/envs/common.py", line 3463, in _rollout_stop_early
+    tensordict = self._step_mdp(tensordict)
+  File "/home/wlruys/micromamba/envs/py313/lib/python3.13/site-packages/torchrl/envs/utils.py", line 316, in __call__
+    self._grab_and_place(
+    ~~~~~~~~~~~~~~~~~~~~^
+        self.keys_from_next,
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        _allow_absent_keys=self._allow_absent_keys,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/wlruys/micromamba/envs/py313/lib/python3.13/site-packages/torchrl/envs/utils.py", line 220, in _grab_and_place
+    val_out = val.empty(batch_size=val.batch_size)
+              ^^^^^^^^^
+AttributeError: '_NoDefault' object has no attribute 'empty'

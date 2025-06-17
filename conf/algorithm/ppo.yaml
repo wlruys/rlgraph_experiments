@@ -1,13 +1,14 @@
 _target_: task4feedback.ml.algorithms.PPOConfig
 implementation: torchrl
+workers: 4
 graphs_per_collection: 4
 epochs_per_collection: 4
 states_per_collection: 1000
 num_collections: 1000
-minibatch_size: 32
+minibatch_size: 256
 collect_device: cpu
 update_device: cpu
-workers: 4
+storing_device: cpu
 threads_per_worker: 1
 ent_coef: 0.0005
 gae_lmbda: 0.99
@@ -22,3 +23,4 @@ compile_policy: false
 compile_advantage: false
 compile_update: false
 using_lstm: false
+collector: "multi_sync"
