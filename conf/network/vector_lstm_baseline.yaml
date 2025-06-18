@@ -2,14 +2,14 @@ defaults:
   - architecture/vector_state_net@layers.state
   - architecture/output_head@layers.actor
   - architecture/output_head@layers.critic
+  - architecture/lstm@layers.lstm
 
 layers:
   state:
-    hidden_channels: []
+    hidden_channels: [64]
   actor:
-    hidden_channels: 128
+    hidden_channels: 64
   critic:
-    hidden_channels: 128
-
+    hidden_channels: 64
 critic:
   add_progress: true

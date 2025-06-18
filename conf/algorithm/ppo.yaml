@@ -4,9 +4,10 @@ workers: 4
 graphs_per_collection: 4
 epochs_per_collection: 4
 states_per_collection: 10000
-rollout_steps: 80
+rollout_steps: 0
 num_collections: 20000
-minibatch_size: 64
+#number of samples per minibatch (episodes per minibatch if sample_slices = false and using ppo LSTM)
+minibatch_size: 128 
 collect_device: cpu
 update_device: cpu
 storing_device: cpu
@@ -19,11 +20,10 @@ clip_vloss: false
 value_norm: "l2"
 val_coef: 0.5
 normalize_advantage: false
-max_grad_norm: 0.5
+max_grad_norm: 100
 compile_policy: false
 compile_advantage: false
 compile_update: false
-using_lstm: false
 collector: "multi_sync"
 sample_slices: true
 slice_len: 16
