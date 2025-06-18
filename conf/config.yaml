@@ -1,7 +1,7 @@
 # conf/config.yaml
 defaults:
   - graph: static_jacobi
-  - reward: ieft
+  - reward: default
   - system: uniform
   - feature: candidate_coordinate
   - network: vector_baseline

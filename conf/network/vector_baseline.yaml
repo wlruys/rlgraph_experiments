@@ -2,7 +2,7 @@ defaults:
   - architecture/vector_state_net@layers.state
   - architecture/output_head@layers.actor
   - architecture/output_head@layers.critic
-#  - architecture/lstm@layers.lstm
+  - architecture/lstm@layers.lstm
 
 critic:
   add_progress: true

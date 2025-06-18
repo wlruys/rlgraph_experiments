@@ -4,7 +4,7 @@ workers: 4
 graphs_per_collection: 4
 epochs_per_collection: 4
 states_per_collection: 10000
-rollout_steps: 0
+rollout_steps: 80
 num_collections: 20000
 minibatch_size: 64
 collect_device: cpu
