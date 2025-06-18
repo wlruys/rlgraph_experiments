@@ -104,9 +104,15 @@ def make_env(
     env = TransformedEnv(env, StepCounter())
     env.append_transform(TrajCounter())
     env.append_transform(InitTracker())
+    env.append_transform(ObservationNorm(in_keys=[("observation", "nodes", "tasks", "attr")]))
 
     if lstm is not None:
         print("Adding LSTM module to environment", flush=True)
         env.append_transform(lstm.make_tensordict_primer())
-
+        
+    if isinstance(env.transform, Compose):
+        for transform in env.transform:
+            if isinstance(transform, ObservationNorm) and not transform.initialized:
+                transform.init_stats(num_iter=500, key=("observation", "nodes", "tasks", "attr"))
+        
     return env

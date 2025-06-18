@@ -12,7 +12,7 @@ collect_device: cpu
 update_device: cpu
 storing_device: cpu
 threads_per_worker: 1
-ent_coef: 0
+ent_coef: 0.005
 gae_lmbda: 0.99
 gae_gamma: 1.0
 clip_eps: 0.2

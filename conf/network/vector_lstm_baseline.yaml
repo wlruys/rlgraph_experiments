@@ -5,11 +5,13 @@ defaults:
   - architecture/lstm@layers.lstm
 
 layers:
+  lstm:
+    hidden_size: 128
   state:
-    hidden_channels: [64]
+    hidden_channels: [128]
   actor:
-    hidden_channels: 64
+    hidden_channels: 128
   critic:
-    hidden_channels: 64
+    hidden_channels: 128
 critic:
   add_progress: true

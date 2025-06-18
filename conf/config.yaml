@@ -4,7 +4,7 @@ defaults:
   - reward: ieft
   - system: uniform
   - feature: candidate_coordinate
-  - network: vector_baseline
+  - network: vector_lstm_baseline
   - algorithm: ppo
   - runtime: default
   - wandb: default

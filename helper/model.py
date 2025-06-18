@@ -68,8 +68,6 @@ def create_td_actor_critic_models(
     actor_layer = layers.actor
     critic_layer = layers.critic
 
-    rprint(actor_layer)
-
     actor_layers = []
 
     policy_state_module = instantiate(
