@@ -24,6 +24,20 @@ from torchrl.modules import LSTMModule
 from typing import Optional
 from functools import partial
 
+from torchrl.envs.transforms import NoopResetEnv
+
+
+class OneTimeNoopResetEnv(NoopResetEnv):
+    def __init__(self, noops: int, random: bool = True):
+        super().__init__(noops=noops, random=random)
+        self._used = False
+
+    def reset(self, tensordict):
+        if not self._used:
+            self._used = True
+            return super().reset(tensordict)
+        return self.parent.reset(tensordict)
+
 
 def create_system(cfg: DictConfig):
     system_info = cfg.system
@@ -70,8 +84,16 @@ def create_observer_factory(cfg: DictConfig):
     return observer_factory_t
 
 
+@dataclass
+class NormalizationDetails:
+    task_norm: dict
+
+
 def make_env(
-    graph_builder: GraphBuilder, cfg: DictConfig, lstm: Optional[LSTMModule] = None
+    graph_builder: GraphBuilder,
+    cfg: DictConfig,
+    lstm: Optional[LSTMModule] = None,
+    normalization: Optional[NormalizationDetails] = None,
 ):
     gmsh.initialize()
 
@@ -104,15 +126,49 @@ def make_env(
     env = TransformedEnv(env, StepCounter())
     env.append_transform(TrajCounter())
     env.append_transform(InitTracker())
-    env.append_transform(ObservationNorm(in_keys=[("observation", "nodes", "tasks", "attr")]))
+    env.append_transform(OneTimeNoopResetEnv(len(m), random=True))
 
     if lstm is not None:
         print("Adding LSTM module to environment", flush=True)
         env.append_transform(lstm.make_tensordict_primer())
-        
-    if isinstance(env.transform, Compose):
-        for transform in env.transform:
-            if isinstance(transform, ObservationNorm) and not transform.initialized:
-                transform.init_stats(num_iter=500, key=("observation", "nodes", "tasks", "attr"))
-        
-    return env
+
+    if normalization is None:
+        task_norm_transform = ObservationNorm(
+            in_keys=[("observation", "nodes", "tasks", "attr")],
+            eps=1e-4,
+            standard_normal=True,
+        )
+        env.append_transform(task_norm_transform)
+        if isinstance(env.transform, Compose):
+            for transform in env.transform:
+                if isinstance(transform, ObservationNorm) and not transform.initialized:
+                    transform.init_stats(
+                        num_iter=5000, key=("observation", "nodes", "tasks", "attr")
+                    )
+        new_norm = NormalizationDetails(task_norm=task_norm_transform.state_dict())
+    else:
+        task_norm_transform = ObservationNorm(
+            in_keys=[("observation", "nodes", "tasks", "attr")],
+            eps=1e-4,
+            standard_normal=True,
+            loc=normalization.task_norm["loc"],
+            scale=normalization.task_norm["scale"],
+        )
+        task_norm_transform.load_state_dict(normalization.task_norm)
+
+        env.append_transform(task_norm_transform)
+
+        # if isinstance(env.transform, Compose):
+        #     for transform in env.transform:
+        #         if isinstance(transform, ObservationNorm) and not transform.initialized:
+        #             transform.init_stats(
+        #                 num_iter=5, key=("observation", "nodes", "tasks", "attr")
+        #             )
+        # task_norm_transform.load_state_dict(normalization.task_norm)
+        new_norm = None
+
+    if new_norm is not None:
+        return env, new_norm
+
+    else:
+        return env

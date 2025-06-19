@@ -1,6 +1,6 @@
 # conf/config.yaml
 defaults:
-  - graph: static_jacobi
+  - graph: dynamic_jacobi
   - reward: ieft
   - system: uniform
   - feature: candidate_coordinate

@@ -1,4 +1,4 @@
-project: rlgraph_experiments
+project: dynamic_jac_lstm
 name: default
 enabled: true
 dir: /home/wlruys/workspace/scheduling/logs
