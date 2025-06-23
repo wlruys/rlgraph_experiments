@@ -5,7 +5,7 @@ defaults:
 
 layers:
   state:
-    hidden_channels: [128]
+    hidden_channels: []
   actor:
     hidden_channels: 128
   critic:
