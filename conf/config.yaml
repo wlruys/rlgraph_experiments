@@ -1,10 +1,10 @@
 # conf/config.yaml
 defaults:
-  - graph: dynamic_jacobi
-  - reward: ieft
+  - graph: static_jacobi
+  - reward: default
   - system: uniform
   - feature: candidate_coordinate
-  - network: vector_lstm_baseline
+  - network: vector_baseline
   - algorithm: ppo
   - runtime: default
   - wandb: default

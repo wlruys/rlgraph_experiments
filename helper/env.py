@@ -126,7 +126,7 @@ def make_env(
     env = TransformedEnv(env, StepCounter())
     env.append_transform(TrajCounter())
     env.append_transform(InitTracker())
-    env.append_transform(OneTimeNoopResetEnv(len(m), random=True))
+    #env.append_transform(OneTimeNoopResetEnv(len(m), random=True))
 
     if lstm is not None:
         print("Adding LSTM module to environment", flush=True)
@@ -143,7 +143,7 @@ def make_env(
             for transform in env.transform:
                 if isinstance(transform, ObservationNorm) and not transform.initialized:
                     transform.init_stats(
-                        num_iter=5000, key=("observation", "nodes", "tasks", "attr")
+                        num_iter=1000, key=("observation", "nodes", "tasks", "attr")
                     )
         new_norm = NormalizationDetails(task_norm=task_norm_transform.state_dict())
     else:
