@@ -1,2 +1,2 @@
-# conf/reward/ieft.yaml
-class: IncrementalEFT
+_target_: task4feedback.ml.env.IncrementalEFT
+_partial_: true

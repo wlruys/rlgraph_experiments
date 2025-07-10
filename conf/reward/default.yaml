@@ -1,1 +1,2 @@
-class: RuntimeEnv
+_target_: task4feedback.ml.env.RuntimeEnv
+_partial_: true

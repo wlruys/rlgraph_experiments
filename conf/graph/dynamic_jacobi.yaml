@@ -7,7 +7,7 @@ config:
   randomness: 1
   L: 1
   n: 4
-  steps: 60
+  steps: 5
   permute_idx: 0
   start_workload: 1000 
 init:

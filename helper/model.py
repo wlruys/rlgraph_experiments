@@ -96,7 +96,7 @@ def create_td_actor_critic_models(
     policy_output_module = instantiate(
         actor_layer,
         input_dim=output_dim,
-        output_dim=cfg.system.config.n_devices - 1,
+        output_dim=cfg.system.n_devices - 1,
         _recursive_=False,
     )
 

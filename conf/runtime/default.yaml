@@ -1,5 +1,4 @@
-class: BatchTransitionConditions
-config:
-  batch_size: 5
-  queue_threshold: 2
-  max_in_flight: 16
+_target_: task4feedback.fastsim2.BatchTransitionConditions
+batch_size: 5
+queue_threshold: 5
+max_in_flight: 16
