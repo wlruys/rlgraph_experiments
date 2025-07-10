@@ -103,7 +103,7 @@ def make_env(
     d = graph.get_blocks()
     m = graph
 
-    m.finalize_tasks()
+    # m.finalize_tasks()
 
     graph_spec = create_graph_spec(
         **OmegaConf.to_container(cfg.feature.limits, resolve=True)
@@ -122,12 +122,16 @@ def make_env(
         change_priority=cfg.graph.env.change_priority,
         change_locations=cfg.graph.env.change_locations,
         seed=cfg.graph.env.seed,
+        # max_samples_per_iter = 3000,
+        max_samples_per_iter=len(graph)+1
+        if cfg.algorithm.rollout_steps == 0
+        else cfg.algorithm.rollout_steps+1,
     )
     env = TransformedEnv(env, StepCounter())
     env.append_transform(TrajCounter())
     env.append_transform(InitTracker())
     # env.append_transform(OneTimeNoopResetEnv(len(m), random=True))
-
+    
     if lstm is not None:
         print("Adding LSTM module to environment", flush=True)
         env.append_transform(lstm.make_tensordict_primer())
